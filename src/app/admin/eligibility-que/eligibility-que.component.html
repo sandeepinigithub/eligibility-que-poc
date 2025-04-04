@@ -10,10 +10,8 @@
 
           <!-- Text Input -->
           <ng-container *ngIf="q.type === 'text'">
-            <input [formControlName]="q.id"
-                   [placeholder]="q.placeholder"
-                   class="form-control mb-2"
-                   [ngClass]="{'is-invalid': isInvalid(q.id)}" />
+            <input [formControlName]="q.id" [placeholder]="q.placeholder" class="form-control mb-2"
+              [ngClass]="{'is-invalid': isInvalid(q.id)}" />
             <div class="invalid-feedback" *ngIf="isInvalid(q.id)">
               This field is required.
             </div>
@@ -22,47 +20,51 @@
           <!-- Radio Buttons -->
           <ng-container *ngIf="q.type === 'radio'">
             <div *ngFor="let option of q.options" class="form-check mb-1">
-              <input type="radio"
-                     class="form-check-input"
-                     [formControlName]="q.id"
-                     [value]="option.value"
-                     [id]="q.id + '-' + option.value" />
+              <input type="radio" class="form-check-input" [formControlName]="q.id" [value]="option.value"
+                [id]="q.id + '-' + option.value" />
               <label class="form-check-label" [for]="q.id + '-' + option.value">
                 {{ option.label }}
               </label>
             </div>
 
             <!-- Radio Description -->
-            <textarea *ngIf="isRadioDescRequired(q)"
-                      class="form-control mt-2"
-                      [formControlName]="q.id + '_desc'"
-                      placeholder="Please describe..."></textarea>
+            <textarea *ngIf="isRadioDescRequired(q)" class="form-control mt-2" [formControlName]="q.id + '_desc'"
+              placeholder="Please describe..."></textarea>
+            <div class="invalid-feedback" *ngIf="isInvalid(q.id)">
+              This field is required.
+            </div>
           </ng-container>
 
           <!-- Checkboxes -->
           <ng-container *ngIf="q.type === 'checkbox'" [formGroupName]="q.id">
             <div *ngFor="let option of q.options" class="form-check mb-2">
-              <input type="checkbox"
-                     class="form-check-input"
-                     [formControlName]="option.value"
-                     [id]="q.id + '-' + option.value" />
+              <input type="checkbox" class="form-check-input" [formControlName]="option.value"
+                [id]="q.id + '-' + option.value" />
               <label class="form-check-label" [for]="q.id + '-' + option.value">
                 {{ option.label }}
               </label>
 
               <!-- Checkbox Description -->
-              <textarea *ngIf="isCheckboxDescRequired(q, option.value)"
-                        class="form-control mt-2"
-                        [formControlName]="option.value + '_desc'"
-                        placeholder="Please describe..."></textarea>
+              <textarea *ngIf="isCheckboxDescRequired(q, option.value)" class="form-control mt-2"
+                [formControlName]="option.value + '_desc'" placeholder="Please describe..."></textarea>
+                <div class="invalid-feedback" *ngIf="isInvalid(q.id)">
+                  Description is required.
+                </div>
             </div>
+            <small class="text-danger"
+              *ngIf="questionnaireForm.get(q.id)?.invalid && (questionnaireForm.get(q.id)?.dirty || questionnaireForm.get(q.id)?.touched)">
+              Please select at least one option.
+            </small>
           </ng-container>
+
 
           <hr />
         </ng-container>
 
-        <button type="submit" class="btn btn-success mt-3" [disabled]="questionnaireForm.invalid">Submit</button>
+        <button type="submit" class="btn btn-success mt-3 me-3">Submit</button>
+        <button (click)="patchSample()" class="btn btn-primary mt-3">Response</button>
       </form>
     </div>
   </div>
+  
 </div>
