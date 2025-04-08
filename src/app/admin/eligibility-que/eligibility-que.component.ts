@@ -20,6 +20,153 @@ export class EligibilityQueComponent implements OnInit {
 
   loadSurveyFromApi(): void {
     const apiResponse = {
+      // "result": {
+      //   "id": 5,
+      //   "surveyType": "General",
+      //   "title": "LeadSuitability",
+      //   "description": "Survey to find out Ticket Holder if eligible to work",
+      //   "isActive": true,
+      //   "questions": [
+      //     {
+      //       "id": 10,
+      //       "text": "Our company is here to coach and assist you with exploring employment opportunities while helping you manage your benefits. Are you interested in learning more?",
+      //       "section": null,
+      //       "type": "SingleSelection",
+      //       "surveyId": 5,
+      //       "isMandatory": false,
+      //       "placeHolder": null,
+      //       "options": [
+      //         {
+      //           "id": 1,
+      //           "text": "Yes",
+      //           "questionId": 10,
+      //           "isRequiresExplanation": false
+      //         },
+      //         {
+      //           "id": 2,
+      //           "text": "No",
+      //           "questionId": 10,
+      //           "isRequiresExplanation": false
+      //         }
+      //       ],
+      //       "response": null
+      //     },
+      //     {
+      //       "id": 11,
+      //       "text": "Are you able to work at this time?",
+      //       "section": null,
+      //       "type": "SingleSelection",
+      //       "surveyId": 5,
+      //       "isMandatory": false,
+      //       "placeHolder": null,
+      //       "options": [
+      //         {
+      //           "id": 3,
+      //           "text": "Yes",
+      //           "questionId": 11,
+      //           "isRequiresExplanation": false
+      //         },
+      //         {
+      //           "id": 4,
+      //           "text": "No",
+      //           "questionId": 11,
+      //           "isRequiresExplanation": false
+      //         }
+      //       ],
+      //       "response": null
+      //     },
+      //     {
+      //       "id": 12,
+      //       "text": "Would you like to work with our career coach to help you achieve your goals?",
+      //       "section": null,
+      //       "type": "SingleSelection",
+      //       "surveyId": 5,
+      //       "isMandatory": false,
+      //       "placeHolder": null,
+      //       "options": [
+      //         {
+      //           "id": 5,
+      //           "text": "Yes",
+      //           "questionId": 12,
+      //           "isRequiresExplanation": false
+      //         },
+      //         {
+      //           "id": 6,
+      //           "text": "No",
+      //           "questionId": 12,
+      //           "isRequiresExplanation": false
+      //         }
+      //       ],
+      //       "response": null
+      //     },
+      //     {
+      //       "id": 13,
+      //       "text": "What is your current employment status?",
+      //       "section": null,
+      //       "type": "SingleSelection",
+      //       "surveyId": 5,
+      //       "isMandatory": false,
+      //       "placeHolder": null,
+      //       "options": [
+      //         {
+      //           "id": 7,
+      //           "text": "Not working but interested",
+      //           "questionId": 13,
+      //           "isRequiresExplanation": false
+      //         },
+      //         {
+      //           "id": 8,
+      //           "text": "Working but looking",
+      //           "questionId": 13,
+      //           "isRequiresExplanation": false
+      //         },
+      //         {
+      //           "id": 9,
+      //           "text": "Working and satisfied",
+      //           "questionId": 13,
+      //           "isRequiresExplanation": false
+      //         }
+      //       ],
+      //       "response": null
+      //     },
+      //     {
+      //       "id": 14,
+      //       "text": "What type of work are you interested in pursuing?",
+      //       "section": null,
+      //       "type": "TextInput",
+      //       "surveyId": 5,
+      //       "isMandatory": false,
+      //       "placeHolder": null,
+      //       "options": [],
+      //       "response": null
+      //     },
+      //     {
+      //       "id": 75,
+      //       "text": "What type of career are you interested ?",
+      //       "section": null,
+      //       "type": "MultipleSelection",
+      //       "surveyId": 5,
+      //       "isMandatory": false,
+      //       "placeHolder": null,
+      //       "options": [
+      //         {
+      //           "id": 118,
+      //           "text": "Technical",
+      //           "questionId": 75,
+      //           "isRequiresExplanation": false
+      //         },
+      //         {
+      //           "id": 120,
+      //           "text": "Management",
+      //           "questionId": 75,
+      //           "isRequiresExplanation": false
+      //         }
+      //       ],
+      //       "response": null
+      //     }
+      //   ]
+      // },
+
       "result": {
         "id": 5,
         "surveyType": "General",
@@ -49,7 +196,10 @@ export class EligibilityQueComponent implements OnInit {
                 "isRequiresExplanation": false
               }
             ],
-            "response": null
+            "response": {
+              "selectedOptionId": 1,
+              "textAnswer": "Yes"
+            }
           },
           {
             "id": 11,
@@ -73,7 +223,10 @@ export class EligibilityQueComponent implements OnInit {
                 "isRequiresExplanation": false
               }
             ],
-            "response": null
+            "response": {
+              "selectedOptionId": 3,
+              "textAnswer": "Yes"
+            }
           },
           {
             "id": 12,
@@ -97,7 +250,10 @@ export class EligibilityQueComponent implements OnInit {
                 "isRequiresExplanation": false
               }
             ],
-            "response": null
+            "response": {
+              "selectedOptionId": 6,
+              "textAnswer": "Yes"
+            }
           },
           {
             "id": 13,
@@ -127,7 +283,10 @@ export class EligibilityQueComponent implements OnInit {
                 "isRequiresExplanation": false
               }
             ],
-            "response": null
+            "response": {
+              "selectedOptionId": 8,
+              "textAnswer": "Yes"
+            }
           },
           {
             "id": 14,
@@ -138,7 +297,10 @@ export class EligibilityQueComponent implements OnInit {
             "isMandatory": false,
             "placeHolder": null,
             "options": [],
-            "response": null
+            "response": {
+              "selectedOptionId": null,
+              "textAnswer": "Hello , I am text demo"
+            }
           },
           {
             "id": 75,
@@ -162,7 +324,10 @@ export class EligibilityQueComponent implements OnInit {
                 "isRequiresExplanation": false
               }
             ],
-            "response": null
+            "response": {
+              "selectedOptionId": 118,
+              "textAnswer": ""
+            }
           }
         ]
       },
@@ -256,25 +421,47 @@ export class EligibilityQueComponent implements OnInit {
 
     this.questions.forEach(q => {
       const res = q.response;
+
       if (q.type === 'text') {
         patchData[q.id] = res?.textAnswer || '';
       } else if (q.type === 'radio') {
         patchData[q.id] = res?.selectedOptionId?.toString() || '';
-        if (
-          q.options?.find(
-            (opt: any) =>
-              opt.isDescRequired &&
-              `${opt.optionId}` === res?.selectedOptionId?.toString()
-          )
-        ) {
+
+        const selectedOption = q.options?.find(
+          (opt: any) =>
+            opt.isDescRequired && `${opt.value}` === res?.selectedOptionId?.toString()
+        );
+        if (selectedOption) {
           patchData[`${q.id}_desc`] = res?.textAnswer || '';
         }
+      } else if (q.type === 'checkbox') {
+        const groupPatch: Record<string, any> = {};
+        const selectedOptions = res?.selectedOptionId || [];
+
+        q.options.forEach((option: any) => {
+          if (option?.value) {
+            groupPatch[option?.value] = true;
+
+            if (q.required) {
+              groupPatch[`${option?.value}_desc`] = res?.textAnswers?.[option?.value] || '';
+            }
+          }
+        });
+
+        // For unselected options, default to false
+        q.options.forEach((opt: any) => {
+          if (!(opt.value in groupPatch)) {
+            groupPatch[opt.value] = false;
+          }
+        });
+
+        patchData[q.id] = groupPatch;
       }
-      // Add checkbox logic here in future if needed
     });
 
     this.patchResponses(patchData);
   }
+
 
   patchResponses(data: Partial<Record<string, any>>): void {
     this.questionnaireForm.patchValue(data);
@@ -290,7 +477,7 @@ export class EligibilityQueComponent implements OnInit {
       const value = this.questionnaireForm.get(controlName)?.value;
 
       let detail: any = {
-        questionId: question.id,
+        questionId: +question.id?.replace(/^q/, ''),
         textAnswer: null,
         selectedOptions: []
       };
@@ -299,7 +486,7 @@ export class EligibilityQueComponent implements OnInit {
       } else if (question.type === 'radio') {
         if (value) {
           detail.selectedOptions.push({
-            surveyQuestionOptionId: value,
+            surveyQuestionOptionId: +value,
             textAnswer: null
           });
         }
