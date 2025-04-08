@@ -1,22 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-interface QuestionOption {
-  label: string;
-  value: string;
-  isDescRequired?: boolean;
-}
-
-interface Question {
-  id: string;
-  question: string;
-  type: 'text' | 'radio' | 'checkbox';
-  placeholder?: string;
-  options?: QuestionOption[];
-  required?: boolean; // ✅ new key
-}
-
-
 @Component({
   selector: 'app-eligibility-que',
   templateUrl: './eligibility-que.component.html',
@@ -25,92 +9,240 @@ interface Question {
 })
 export class EligibilityQueComponent implements OnInit {
   questionnaireForm!: FormGroup;
-
-  questions: Question[] = [
-    {
-      id: 'q1',
-      question: 'What is your name?',
-      type: 'text',
-      placeholder: 'Enter your name',
-      required: true
-    },
-    {
-      id: 'q2',
-      question: 'What is your gender?',
-      type: 'radio',
-      required: true,
-      options: [
-        { label: 'Male', value: 'male', isDescRequired: false },
-        { label: 'Female', value: 'female', isDescRequired: true },
-        { label: 'Other', value: 'other', isDescRequired: false }
-      ]
-    },
-    {
-      id: 'q3',
-      question: 'Which hobbies do you enjoy?',
-      type: 'checkbox',
-      required: true,
-      options: [
-        { label: 'Reading', value: 'reading', isDescRequired: false,},
-        { label: 'Traveling', value: 'traveling', isDescRequired: true },
-        { label: 'Cooking', value: 'cooking', isDescRequired: false },
-        { label: 'Sports', value: 'sports', isDescRequired: true },
-        { label: 'Music', value: 'music', isDescRequired: false }
-      ]
-    }
-  ];
-  
+  questions: any[] = [];
+  survey: any
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.loadSurveyFromApi();
+  }
+
+  loadSurveyFromApi(): void {
+    const apiResponse = {
+      "result": {
+        "id": 5,
+        "surveyType": "General",
+        "title": "LeadSuitability",
+        "description": "Survey to find out Ticket Holder if eligible to work",
+        "isActive": true,
+        "questions": [
+          {
+            "id": 10,
+            "text": "Our company is here to coach and assist you with exploring employment opportunities while helping you manage your benefits. Are you interested in learning more?",
+            "section": null,
+            "type": "SingleSelection",
+            "surveyId": 5,
+            "isMandatory": false,
+            "placeHolder": null,
+            "options": [
+              {
+                "id": 1,
+                "text": "Yes",
+                "questionId": 10,
+                "isRequiresExplanation": false
+              },
+              {
+                "id": 2,
+                "text": "No",
+                "questionId": 10,
+                "isRequiresExplanation": false
+              }
+            ],
+            "response": null
+          },
+          {
+            "id": 11,
+            "text": "Are you able to work at this time?",
+            "section": null,
+            "type": "SingleSelection",
+            "surveyId": 5,
+            "isMandatory": false,
+            "placeHolder": null,
+            "options": [
+              {
+                "id": 3,
+                "text": "Yes",
+                "questionId": 11,
+                "isRequiresExplanation": false
+              },
+              {
+                "id": 4,
+                "text": "No",
+                "questionId": 11,
+                "isRequiresExplanation": false
+              }
+            ],
+            "response": null
+          },
+          {
+            "id": 12,
+            "text": "Would you like to work with our career coach to help you achieve your goals?",
+            "section": null,
+            "type": "SingleSelection",
+            "surveyId": 5,
+            "isMandatory": false,
+            "placeHolder": null,
+            "options": [
+              {
+                "id": 5,
+                "text": "Yes",
+                "questionId": 12,
+                "isRequiresExplanation": false
+              },
+              {
+                "id": 6,
+                "text": "No",
+                "questionId": 12,
+                "isRequiresExplanation": false
+              }
+            ],
+            "response": null
+          },
+          {
+            "id": 13,
+            "text": "What is your current employment status?",
+            "section": null,
+            "type": "SingleSelection",
+            "surveyId": 5,
+            "isMandatory": false,
+            "placeHolder": null,
+            "options": [
+              {
+                "id": 7,
+                "text": "Not working but interested",
+                "questionId": 13,
+                "isRequiresExplanation": false
+              },
+              {
+                "id": 8,
+                "text": "Working but looking",
+                "questionId": 13,
+                "isRequiresExplanation": false
+              },
+              {
+                "id": 9,
+                "text": "Working and satisfied",
+                "questionId": 13,
+                "isRequiresExplanation": false
+              }
+            ],
+            "response": null
+          },
+          {
+            "id": 14,
+            "text": "What type of work are you interested in pursuing?",
+            "section": null,
+            "type": "TextInput",
+            "surveyId": 5,
+            "isMandatory": false,
+            "placeHolder": null,
+            "options": [],
+            "response": null
+          },
+          {
+            "id": 75,
+            "text": "What type of career are you interested ?",
+            "section": null,
+            "type": "MultipleSelection",
+            "surveyId": 5,
+            "isMandatory": false,
+            "placeHolder": null,
+            "options": [
+              {
+                "id": 118,
+                "text": "Technical",
+                "questionId": 75,
+                "isRequiresExplanation": false
+              },
+              {
+                "id": 120,
+                "text": "Management",
+                "questionId": 75,
+                "isRequiresExplanation": false
+              }
+            ],
+            "response": null
+          }
+        ]
+      },
+    };
+
+    this.questions = apiResponse.result.questions.map(q => ({
+      id: `q${q.id}`,
+      question: q.text,
+      type:
+        q.type === 'TextInput'
+          ? 'text'
+          : q.type === 'SingleSelection'
+            ? 'radio'
+            : q.type === 'MultipleSelection'
+              ? 'checkbox'
+              : '',
+      required: q.isMandatory,
+      options:
+        q.options?.map((opt: any) => ({
+          label: opt.text,
+          value: `${opt.id}`,
+          isDescRequired: opt.isRequiresExplanation
+        })) || [],
+      response: q.response
+    }));
+
     this.formInitialization();
+    this.patchFromApiResponse();
   }
 
   formInitialization(): void {
     const group: Record<string, any> = {};
-  
+
     this.questions.forEach(q => {
       if (q.type === 'text' || q.type === 'radio') {
         group[q.id] = ['', q.required ? Validators.required : []];
-  
-        if (q.type === 'radio' && q.options?.some(opt => opt.isDescRequired)) {
-          group[`${q.id}_desc`] = ['', Validators.required];
+
+        if (q.type === 'radio' && q.options.some((opt: any) => opt.isDescRequired)) {
+          group[`${q.id}_desc`] = ['', []]; // Optional, conditionally shown
         }
       } else if (q.type === 'checkbox') {
         const checkboxGroup: Record<string, any> = {};
-        q.options?.forEach((opt:any) => {
+        q.options.forEach((opt: any) => {
           checkboxGroup[opt.value] = [false];
           if (opt.isDescRequired) {
-            checkboxGroup[`${opt.value}_desc`] = [''];
+            checkboxGroup[`${opt.value}_desc`] = ['', []];
           }
         });
         group[q.id] = this.fb.group(checkboxGroup);
       }
     });
-  
+
     this.questionnaireForm = this.fb.group(group);
   }
-  
 
-  isRadioDescRequired(q: Question): boolean {
+  isRadioDescRequired(q: any): boolean {
     const selected = this.questionnaireForm.get(q.id)?.value;
-    return q.options?.some(opt => opt.isDescRequired && opt.value === selected) ?? false;
+    return (
+      q.options?.some(
+        (opt: any) => opt.isDescRequired && opt.value === selected
+      ) ?? false
+    );
   }
 
-  isCheckboxDescRequired(q: Question, value: string): boolean {
+  isCheckboxDescRequired(q: any, value: string): boolean {
     const group = this.questionnaireForm.get(q.id);
     const selected = group?.get(value)?.value;
-    const option = q.options?.find(opt => opt.value === value && opt.isDescRequired);
+    const option = q.options?.find(
+      (opt: any) => opt.value === value && opt.isDescRequired
+    );
     return selected && !!option;
   }
 
-  isInvalid(controlName: string): boolean {
-    const control = this.questionnaireForm.get(controlName);
+  isInvalid(controlName: string, groupName?: string): boolean {
+    const control = groupName
+      ? (this.questionnaireForm.get(groupName) as FormGroup)?.get(controlName)
+      : this.questionnaireForm.get(controlName);
     return !!control && control.invalid && (control.dirty || control.touched);
   }
 
-  /** Submit responses */
   submit(): void {
     if (this.questionnaireForm.valid) {
       console.log('Submitted:', this.questionnaireForm.value);
@@ -119,24 +251,83 @@ export class EligibilityQueComponent implements OnInit {
     }
   }
 
-  /** Optionally patch responses */
+  patchFromApiResponse(): void {
+    const patchData: Record<string, any> = {};
+
+    this.questions.forEach(q => {
+      const res = q.response;
+      if (q.type === 'text') {
+        patchData[q.id] = res?.textAnswer || '';
+      } else if (q.type === 'radio') {
+        patchData[q.id] = res?.selectedOptionId?.toString() || '';
+        if (
+          q.options?.find(
+            (opt: any) =>
+              opt.isDescRequired &&
+              `${opt.optionId}` === res?.selectedOptionId?.toString()
+          )
+        ) {
+          patchData[`${q.id}_desc`] = res?.textAnswer || '';
+        }
+      }
+      // Add checkbox logic here in future if needed
+    });
+
+    this.patchResponses(patchData);
+  }
+
   patchResponses(data: Partial<Record<string, any>>): void {
     this.questionnaireForm.patchValue(data);
   }
 
-  patchSample(): void {
-    const sampleData = {
-      q1: 'John Doe',
-      q2: 'female',
-      q2_desc: 'Prefer not to say',
-      q3: {
-        reading: true,
-        traveling: true,
-        traveling_desc: 'Love exploring new cultures',
-        music: true
+
+  submitSurvey(): void {
+    const responseDetails: any[] = [];
+
+    this.questions.forEach((question: any) => {
+      // const controlName = 'q' + question.id;
+      const controlName = question.id;
+      const value = this.questionnaireForm.get(controlName)?.value;
+
+      let detail: any = {
+        questionId: question.id,
+        textAnswer: null,
+        selectedOptions: []
+      };
+      if (question.type === 'text') {
+        detail.textAnswer = value;
+      } else if (question.type === 'radio') {
+        if (value) {
+          detail.selectedOptions.push({
+            surveyQuestionOptionId: value,
+            textAnswer: null
+          });
+        }
+      } else if (question.type === 'checkbox' && value && typeof value === 'object') {
+        Object.entries(value).forEach(([optionId, isChecked]) => {
+          if (isChecked) {
+            detail.selectedOptions.push({
+              surveyQuestionOptionId: +optionId,
+              textAnswer: null
+            });
+          }
+        });
       }
+
+      responseDetails.push(detail);
+    });
+
+    const payload = {
+      id: 0,
+      surveyId: 1,
+      clientId: 'CLT-1-000-000-01', // replace with actual client ID if available
+      responseDetails
     };
-    this.patchResponses(sampleData);
+
+    console.log('Payload to API:', payload);
+
+    // Send payload to API
+    // this.http.post('your-api-endpoint', payload).subscribe(...)
   }
-  
+
 }

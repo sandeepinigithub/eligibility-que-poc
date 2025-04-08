@@ -6,65 +6,82 @@
     <div class="card-body">
       <form [formGroup]="questionnaireForm" (ngSubmit)="submit()" novalidate>
         <ng-container *ngFor="let q of questions">
-          <label class="form-label fw-medium text-secondary">{{ q.question }}</label>
+          <label class="form-label fw-medium text-secondary">
+            {{ q.question }} <span *ngIf="q.required" class="text-danger">*</span>
+          </label>
 
           <!-- Text Input -->
           <ng-container *ngIf="q.type === 'text'">
-            <input [formControlName]="q.id" [placeholder]="q.placeholder" class="form-control mb-2"
-              [ngClass]="{'is-invalid': isInvalid(q.id)}" />
-            <div class="invalid-feedback" *ngIf="isInvalid(q.id)">
-              This field is required.
-            </div>
+            <input
+              [formControlName]="q.id"
+              class="form-control mb-2"
+              [ngClass]="{ 'is-invalid': isInvalid(q.id) }"
+              placeholder="Type your answer..."
+            />
+            <div class="invalid-feedback" *ngIf="isInvalid(q.id)">This field is required.</div>
           </ng-container>
 
-          <!-- Radio Buttons -->
+          <!-- Radio Input -->
           <ng-container *ngIf="q.type === 'radio'">
             <div *ngFor="let option of q.options" class="form-check mb-1">
-              <input type="radio" class="form-check-input" [formControlName]="q.id" [value]="option.value"
-                [id]="q.id + '-' + option.value" />
-              <label class="form-check-label" [for]="q.id + '-' + option.value">
-                {{ option.label }}
-              </label>
+              <input
+                type="radio"
+                class="form-check-input"
+                [formControlName]="q.id"
+                [value]="option.value"
+                [id]="q.id + '-' + option.value"
+              />
+              <label class="form-check-label" [for]="q.id + '-' + option.value">{{ option.label }}</label>
             </div>
 
-            <!-- Radio Description -->
-            <textarea *ngIf="isRadioDescRequired(q)" class="form-control mt-2" [formControlName]="q.id + '_desc'"
-              placeholder="Please describe..."></textarea>
-            <div class="invalid-feedback" *ngIf="isInvalid(q.id)">
-              This field is required.
-            </div>
+            <textarea
+              *ngIf="isRadioDescRequired(q)"
+              class="form-control mt-2"
+              [formControlName]="q.id + '_desc'"
+              [ngClass]="{ 'is-invalid': isInvalid(q.id + '_desc') }"
+              placeholder="Please describe..."
+            ></textarea>
+            <div class="invalid-feedback" *ngIf="isInvalid(q.id + '_desc')">Description is required.</div>
+
+            <div class="invalid-feedback" *ngIf="isInvalid(q.id)">This field is required.</div>
           </ng-container>
 
-          <!-- Checkboxes -->
-          <ng-container *ngIf="q.type === 'checkbox'" [formGroupName]="q.id">
-            <div *ngFor="let option of q.options" class="form-check mb-2">
-              <input type="checkbox" class="form-check-input" [formControlName]="option.value"
-                [id]="q.id + '-' + option.value" />
-              <label class="form-check-label" [for]="q.id + '-' + option.value">
-                {{ option.label }}
-              </label>
+          <!-- Checkbox Input -->
+          <ng-container *ngIf="q.type === 'checkbox'">
+            <div [formGroupName]="q.id">
+              <div *ngFor="let option of q.options" class="form-check mb-1">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [formControlName]="option.value"
+                  [id]="q.id + '-' + option.value"
+                />
+                <label class="form-check-label" [for]="q.id + '-' + option.value">{{ option.label }}</label>
 
-              <!-- Checkbox Description -->
-              <textarea *ngIf="isCheckboxDescRequired(q, option.value)" class="form-control mt-2"
-                [formControlName]="option.value + '_desc'" placeholder="Please describe..."></textarea>
-                <div class="invalid-feedback" *ngIf="isInvalid(q.id)">
+                <textarea
+                  *ngIf="isCheckboxDescRequired(q, option.value)"
+                  class="form-control mt-2"
+                  [formControlName]="option.value + '_desc'"
+                  [ngClass]="{ 'is-invalid': isInvalid(option.value + '_desc', q.id) }"
+                  placeholder="Please describe..."
+                ></textarea>
+                <div
+                  class="invalid-feedback"
+                  *ngIf="isInvalid(option.value + '_desc', q.id)"
+                >
                   Description is required.
                 </div>
+              </div>
             </div>
-            <small class="text-danger"
-              *ngIf="questionnaireForm.get(q.id)?.invalid && (questionnaireForm.get(q.id)?.dirty || questionnaireForm.get(q.id)?.touched)">
-              Please select at least one option.
-            </small>
           </ng-container>
-
 
           <hr />
         </ng-container>
 
         <button type="submit" class="btn btn-success mt-3 me-3">Submit</button>
-        <button (click)="patchSample()" class="btn btn-primary mt-3">Response</button>
       </form>
+
+      <button type="submit" class="btn btn-success mt-3 me-3" (click)="submitSurvey()">Desired Payload</button>
     </div>
   </div>
-  
 </div>
