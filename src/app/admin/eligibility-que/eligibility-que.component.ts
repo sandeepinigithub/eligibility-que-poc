@@ -198,7 +198,7 @@ export class EligibilityQueComponent implements OnInit {
             ],
             "response": {
               "selectedOptionId": 1,
-              "textAnswer": "Yes"
+              "textAnswer": "I am Sandeep"
             }
           },
           {
@@ -315,7 +315,7 @@ export class EligibilityQueComponent implements OnInit {
                 "id": 118,
                 "text": "Technical",
                 "questionId": 75,
-                "isRequiresExplanation": false
+                "isRequiresExplanation": true
               },
               {
                 "id": 120,
@@ -326,7 +326,7 @@ export class EligibilityQueComponent implements OnInit {
             ],
             "response": {
               "selectedOptionId": 118,
-              "textAnswer": ""
+              "textAnswer": "Hello Multiple Choice Ans"
             }
           }
         ]
@@ -436,14 +436,14 @@ export class EligibilityQueComponent implements OnInit {
         }
       } else if (q.type === 'checkbox') {
         const groupPatch: Record<string, any> = {};
-        const selectedOptions = res?.selectedOptionId || [];
 
         q.options.forEach((option: any) => {
           if (option?.value) {
             groupPatch[option?.value] = true;
 
-            if (q.required) {
-              groupPatch[`${option?.value}_desc`] = res?.textAnswers?.[option?.value] || '';
+            if (option.isDescRequired) {
+              const checkboxGroup = this.questionnaireForm.get(q.id) as FormGroup;
+              checkboxGroup.get(`${option?.value}_desc`)?.setValue("Hello Sandeep")
             }
           }
         });
@@ -484,18 +484,20 @@ export class EligibilityQueComponent implements OnInit {
       if (question.type === 'text') {
         detail.textAnswer = value;
       } else if (question.type === 'radio') {
+        const isDescRequired  = question.options.some((op:any) => op.isDescRequired == true)
         if (value) {
           detail.selectedOptions.push({
             surveyQuestionOptionId: +value,
-            textAnswer: null
+            textAnswer: isDescRequired ? this.questionnaireForm.get(controlName+ '_desc')?.value : null
           });
         }
       } else if (question.type === 'checkbox' && value && typeof value === 'object') {
-        Object.entries(value).forEach(([optionId, isChecked]) => {
-          if (isChecked) {
+        debugger
+        Object.entries(value).forEach(([optionId, isCheckedOrText]) => {
+          if (isCheckedOrText && typeof(isCheckedOrText) == 'boolean') {
             detail.selectedOptions.push({
               surveyQuestionOptionId: +optionId,
-              textAnswer: null
+              textAnswer: value[`${optionId}_desc`] != undefined && value[`${optionId}_desc`] != null ? value[`${optionId}_desc`] : null
             });
           }
         });
